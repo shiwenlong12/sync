@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":[["singleton","Macro to create a mutable reference to a statically allocated value"]],"mod":[["asm","Assembly instructions"],["delay",""],["interrupt","Interrupts"],["register","RISC-V CSR’s"]]};

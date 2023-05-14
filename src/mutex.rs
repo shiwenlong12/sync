@@ -60,3 +60,32 @@ impl Mutex for MutexBlocking {
         }
     }
 }
+
+
+
+#[test]
+fn test_mutex() {
+    let mutex1 = MutexBlocking::new();
+    let tid0 = ThreadId::from_usize(1);
+    let tid1 = ThreadId::from_usize(2);
+    let tid2 = ThreadId::from_usize(0);
+    let tid3 = ThreadId::from_usize(3);
+
+    
+    //获取锁，并改变locked的值
+    let lock1 = (& mutex1).lock(tid2);
+    assert_eq!(lock1, true);
+    //释放锁，并改变locked的值
+    assert_eq!((& mutex1).unlock(), None);
+    //获取锁，并改变locked的值
+    let lock2 = (& mutex1).lock(tid0);
+    assert_eq!(lock2, true);
+    //获取锁，并向等待队列添加线程1、3
+    let lock3 = (& mutex1).lock(tid1);
+    assert_eq!(lock3, false);
+    let lock4 = (& mutex1).lock(tid3);
+    assert_eq!(lock4, false);
+    //释放锁，并唤醒线程1
+    assert_eq!((& mutex1).unlock(), Some(tid1));
+    
+}

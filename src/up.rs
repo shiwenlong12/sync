@@ -34,7 +34,8 @@ impl<T> UPSafeCell<T> {
 }
 */
 
-/// interior mutability内部可变性
+/// interior mutability
+/// 内部可变性
 pub struct UPSafeCellRaw<T> {
     inner: UnsafeCell<T>,
 }
@@ -110,7 +111,7 @@ unsafe impl<T> Sync for UPIntrFreeCell<T> {}
 /// A wrapper type for a mutably borrowed value from a RefCell<T>
 // 从 RefCell<T> 可变借用值的包装器类型
 pub struct UPIntrRefMut<'a, T>(Option<RefMut<'a, T>>);
-
+// 允许我们在 单核 上安全使用可变全局变量。
 impl<T> UPIntrFreeCell<T> {
     ///
     pub unsafe fn new(value: T) -> Self {
@@ -151,4 +152,34 @@ impl<'a, T> DerefMut for UPIntrRefMut<'a, T> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         self.0.as_mut().unwrap().deref_mut()
     }
+}
+
+
+
+#[test]
+fn test_up() {
+    
+    let value = 1;
+    unsafe{
+        let upsafe1 = UPSafeCellRaw::new(value);
+        let b = (& upsafe1).get_mut();
+        assert_eq!(1,*b);
+    }
+
+    //判断enter()、exit()是否修改IntrMaskingInfo的成员值
+    let mut intr1 = IntrMaskingInfo::new();
+    assert_eq!(intr1.nested_level, 0); 
+    assert_eq!(intr1.sie_before_masking, false);
+    (&mut intr1).enter();
+    assert_eq!(intr1.nested_level, 1); 
+    assert_eq!(intr1.sie_before_masking, true);
+    (&mut intr1).exit();
+    assert_eq!(intr1.nested_level, 0); 
+
+    let value2 = 2;
+    let upintr1 = unsafe{
+            UPIntrFreeCell::new(value2)
+    };
+    (& upintr1).exclusive_access();
+
 }

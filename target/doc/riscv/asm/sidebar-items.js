@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":[["delay","Blocks the program for at least `cycles` CPU cycles."],["ebreak","`EBREAK` instruction wrapper"],["nop","`nop` instruction wrapper"],["sfence_vma","`SFENCE.VMA` instruction wrapper"],["sfence_vma_all","`SFENCE.VMA` instruction wrapper (all address spaces and page table levels)"],["wfi","`WFI` instruction wrapper"]]};

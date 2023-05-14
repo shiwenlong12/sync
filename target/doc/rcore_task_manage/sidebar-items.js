@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["CoroId","协程 Id"],["PThreadManager","PThreadManager 数据结构，只管理进程以及进程之间的父子关系 P 表示进程, T 表示线程"],["ProcId","进程 Id"],["ProcThreadRel","线程、进程之间的关系，通过进程的 Id 来查询这个关系"],["ThreadId","线程 Id"]],"trait":[["Manage","Manager trait"],["Schedule","Scheduler"]]};

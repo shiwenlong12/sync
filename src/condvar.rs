@@ -2,7 +2,8 @@ use super::{Mutex, UPIntrFreeCell};
 use alloc::{collections::VecDeque, sync::Arc};
 use rcore_task_manage::ThreadId;
 
-/// Condvar条件变量
+/// Condvar
+/// 条件变量
 pub struct Condvar {
     /// UPIntrFreeCell<CondvarInner>
     pub inner: UPIntrFreeCell<CondvarInner>,
@@ -28,6 +29,7 @@ impl Condvar {
     /// 唤醒某个阻塞在当前条件变量上的线程
     pub fn signal(&self) -> Option<ThreadId> {
         let mut inner = self.inner.exclusive_access();
+        // 删除第一个元素并返回它，如果 VecDeque 为空，则返回 None。
         inner.wait_queue.pop_front()
         
     }
@@ -59,4 +61,22 @@ impl Condvar {
         let waking_tid = mutex.unlock().unwrap();
         (mutex.lock(tid), Some(waking_tid))
     }
+}
+
+
+#[test]
+fn test_condvar() {
+    let condvar1 = Condvar::new();
+
+    let tid0 = ThreadId::from_usize(0);
+    let tid1 = ThreadId::from_usize(1);
+    let bool1 = (& condvar1).wait_no_sched(tid0);
+    (& condvar1).wait_no_sched(tid1);
+    assert_eq!(bool1, false);
+    //let inner = condvar1.inner.exclusive_access();
+    // let inner = &condvar1.inner;
+    // assert_eq!(*inner.wait_queue.get(0), Some(&tid1));
+    //assert_eq!(condvar1.inner,1);
+    let sig1 = (& condvar1).signal();
+    assert_eq!(sig1, Some(tid0));
 }

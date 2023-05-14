@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["Exception","Exception"],["Interrupt","Interrupt"],["Trap","Trap Cause"]],"fn":[["read","Reads the CSR"],["set","Set supervisor cause register to corresponding cause."],["write","Writes the CSR"]],"struct":[["Scause","scause register"]]};

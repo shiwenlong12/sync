@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["bare_metal","bit_field","embedded_hal","lock_api","rcore_task_manage","riscv","scopeguard","spin","sync","void"];

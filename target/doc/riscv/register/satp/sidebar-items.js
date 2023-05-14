@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":[["Mode","64-bit satp mode"]],"fn":[["read","Reads the CSR"],["set","Sets the register to corresponding page table mode, physical page number and address space id."],["write","Writes the CSR"]],"struct":[["Satp","satp register"]]};
