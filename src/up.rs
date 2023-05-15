@@ -121,6 +121,8 @@ impl<T> UPIntrFreeCell<T> {
     }
 
     /// Panic if the data has been borrowed.
+    /// 能获取其内部对象的可变引用
+    /// 如果程序运行中同时存在多个这样的引用，会触发 panic
     pub fn exclusive_access(&self) -> UPIntrRefMut<'_, T> {
         INTR_MASKING_INFO.get_mut().enter();
         UPIntrRefMut(Some(self.inner.borrow_mut()))
